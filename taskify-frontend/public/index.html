@@ -155,10 +155,10 @@
 
       setInterval(updateClock, 1000); // Start updating the clock
 
-      // Function to create task element with edit button
+      // Function to create task element with edit and delete buttons
       function createTaskElement(taskText) {
         var taskElement = document.createElement('li');
-        taskElement.innerHTML = `${taskText} <button class="editButton">Edit</button>`;
+        taskElement.innerHTML = `${taskText} <button class="editButton">Edit</button> <button class="deleteButton">Delete</button>`;
         return taskElement;
       }
 
@@ -190,11 +190,19 @@
               return input.value;
             });
             // Update task text with new details
-            taskItem.innerHTML = updatedDetails.join(' - ') + ' <button class="editButton">Edit</button>';
+            taskItem.innerHTML = updatedDetails.join(' - ') + ' <button class="editButton">Edit</button> <button class="deleteButton">Delete</button>';
           });
 
           // Append save button to task item
           taskItem.appendChild(saveButton);
+        }
+      });
+
+      // Add event listener for delete buttons
+      taskList.addEventListener('click', function(event) {
+        if (event.target.classList.contains('deleteButton')) {
+          var taskItem = event.target.parentElement;
+          taskItem.remove();
         }
       });
 
@@ -211,8 +219,7 @@
         
         // Create new task list item with timestamp
         var timestamp = new Date().toLocaleString(); // Get current timestamp
-        var newTask = document.createElement('li');
-        newTask.innerHTML = `<span class="timestamp">${timestamp}</span> - ${title} - ${description} - ${location} - ${completionDateTime} - ${priority} <button class="editButton">Edit</button>`;
+        var newTask = createTaskElement(`${timestamp} - ${title} - ${description} - ${location} - ${completionDateTime} - ${priority}`);
         taskList.appendChild(newTask); // Append the new task to the task list
 
         // Clear form fields
